@@ -1,0 +1,57 @@
+// Switch to the 'adms' database
+use adms
+
+// Create a collection named 'InvoicesCollection'
+db.createCollection("InvoicesCollection");
+
+// Insert multiple invoice documents into the 'InvoicesCollection'
+db.InvoicesCollection.insertMany([
+    { invoiceNumber: "INV001", customerName: "John Doe", amount: 250.50, date: new Date("2024-10-01"), status: "Paid", dueDate: new Date("2024-10-15") },
+    { invoiceNumber: "INV002", customerName: "Jane Smith", amount: 400.00, date: new Date("2024-10-05"), status: "Unpaid", dueDate: new Date("2024-10-20") },
+    { invoiceNumber: "INV003", customerName: "Michael Brown", amount: 150.75, date: new Date("2024-09-30"), status: "Paid", dueDate: new Date("2024-10-10") },
+    { invoiceNumber: "INV004", customerName: "Emily White", amount: 320.40, date: new Date("2024-10-07"), status: "Unpaid", dueDate: new Date("2024-10-21") },
+    { invoiceNumber: "INV005", customerName: "William Green", amount: 550.90, date: new Date("2024-10-08"), status: "Paid", dueDate: new Date("2024-10-22") },
+    { invoiceNumber: "INV006", customerName: "Sophia Black", amount: 650.00, date: new Date("2024-09-25"), status: "Unpaid", dueDate: new Date("2024-10-15") },
+    { invoiceNumber: "INV007", customerName: "Daniel Blue", amount: 500.20, date: new Date("2024-10-10"), status: "Paid", dueDate: new Date("2024-10-25") },
+    { invoiceNumber: "INV008", customerName: "Olivia Grey", amount: 350.30, date: new Date("2024-10-12"), status: "Unpaid", dueDate: new Date("2024-10-28") }
+]);
+
+// 1. Find all invoices in the collection
+db.InvoicesCollection.find()
+
+// 2. Update the status of invoice "INV002" to "Paid"
+db.InvoicesCollection.updateOne(
+    { invoiceNumber: "INV002" },
+    { $set: { status: "Paid" } }
+)
+
+// 3. Delete invoices with an amount greater than $500
+db.InvoicesCollection.deleteMany({ amount: { $gt: 500 } })
+
+// 4. Count the number of "Unpaid" invoices
+db.InvoicesCollection.find({ status: "Unpaid" }).count()
+
+// 5. Find all invoices sorted by due date in ascending order
+db.InvoicesCollection.find().sort({ dueDate: 1 })
+
+// 6. Find invoices with an amount greater than $300
+db.InvoicesCollection.find({ amount: { $gt: 300 } })
+
+// 7. Limit the result to 3 invoices
+db.InvoicesCollection.find().limit(3)
+
+// 8. Use `$or` to find invoices with either a status of "Paid" or an amount greater than $400
+db.InvoicesCollection.find({ $or: [{ status: "Paid" }, { amount: { $gt: 400 } }] })
+
+// 9. Find invoices with a due date between "2024-10-10" and "2024-10-20"
+db.InvoicesCollection.find({
+    dueDate: { $gte: new Date("2024-10-10"), $lte: new Date("2024-10-20") }
+})
+
+// 10. Use aggregation to calculate the total amount of all invoices
+db.InvoicesCollection.aggregate([
+    { $group: { _id: null, totalAmount: { $sum: "$amount" } } }
+]);
+
+// Verify data after updates and deletions
+db.InvoicesCollection.find()

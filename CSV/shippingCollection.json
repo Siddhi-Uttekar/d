@@ -1,0 +1,42 @@
+[
+	{
+		"shippingId": 1,
+		"orderId": 101,
+		"trackingNumber": "TRK123456789",
+		"carrier": "FedEx",
+		"shippingStatus": "In Transit",
+		"estimatedDeliveryDate": "2024-11-23"
+	},
+	{
+		"shippingId": 2,
+		"orderId": 102,
+		"trackingNumber": "TRK987654321",
+		"carrier": "UPS",
+		"shippingStatus": "Delivered",
+		"estimatedDeliveryDate": "2024-11-18"
+	},
+	{
+		"shippingId": 3,
+		"orderId": 103,
+		"trackingNumber": "TRK567890123",
+		"carrier": "DHL",
+		"shippingStatus": "Out for Delivery",
+		"estimatedDeliveryDate": "2024-11-20"
+	},
+	{
+		"shippingId": 4,
+		"orderId": 104,
+		"trackingNumber": "TRK234567891",
+		"carrier": "USPS",
+		"shippingStatus": "Pending Pickup",
+		"estimatedDeliveryDate": "2024-11-25"
+	},
+	{
+		"shippingId": 5,
+		"orderId": 105,
+		"trackingNumber": "TRK345678912",
+		"carrier": "BlueDart",
+		"shippingStatus": "In Transit",
+		"estimatedDeliveryDate": "2024-11-24"
+	}
+]

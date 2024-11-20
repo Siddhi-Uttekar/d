@@ -1,0 +1,55 @@
+// Switch to the 'adms' database (creates it if it doesn't exist)
+use adms
+
+// Create a collection named 'ProductsCollection'
+db.createCollection("ProductsCollection");
+
+// Insert multiple product documents into the 'ProductsCollection'
+db.ProductsCollection.insertMany([
+    { name: "Laptop", category: "Electronics", price: 750, stock: 30, brand: "Dell", ratings: 4.5 },
+    { name: "Smartphone", category: "Electronics", price: 500, stock: 50, brand: "Samsung", ratings: 4.3 },
+    { name: "Bluetooth Headphones", category: "Accessories", price: 70, stock: 150, brand: "Sony", ratings: 4.7 },
+    { name: "Desk Chair", category: "Furniture", price: 100, stock: 25, brand: "IKEA", ratings: 4.2 },
+    { name: "Tablet", category: "Electronics", price: 300, stock: 40, brand: "Apple", ratings: 4.6 },
+    { name: "Gaming Console", category: "Electronics", price: 400, stock: 20, brand: "Sony", ratings: 4.8 },
+    { name: "Desk Lamp", category: "Furniture", price: 35, stock: 60, brand: "Philips", ratings: 4.1 },
+    { name: "Washing Machine", category: "Appliances", price: 500, stock: 10, brand: "LG", ratings: 4.0 }
+]);
+
+// 1. Find all products in the collection
+db.ProductsCollection.find()
+
+// 2. Update the stock of the product "Smartphone" to 60
+db.ProductsCollection.updateOne(
+    { name: "Smartphone" },
+    { $set: { stock: 60 } }
+)
+
+// 3. Delete a product with price less than 50
+db.ProductsCollection.deleteOne({ price: { $lt: 50 } })
+
+// 4. Count the number of products in the "Electronics" category
+db.ProductsCollection.find({ category: "Electronics" }).count()
+
+// 5. Find all products and sort them by price in descending order
+db.ProductsCollection.find().sort({ price: -1 })
+
+// 6. Find products with stock greater than 20
+db.ProductsCollection.find({ stock: { $gt: 20 } })
+
+// 7. Limit the results to 3 products
+db.ProductsCollection.find().limit(3)
+
+// 8. Find products with brands either "Sony" or "Apple" using `$in`
+db.ProductsCollection.find({ brand: { $in: ["Sony", "Apple"] } })
+
+// 9. Exclude products from the categories "Furniture" and "Appliances" using `$nin`
+db.ProductsCollection.find({ category: { $nin: ["Furniture", "Appliances"] } })
+
+// 10. Use aggregation to calculate the total stock for each category
+db.ProductsCollection.aggregate([
+    { $group: { _id: "$category", totalStock: { $sum: "$stock" } } }
+]);
+
+// Verify data after updates and deletions
+db.ProductsCollection.find()

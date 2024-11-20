@@ -1,0 +1,94 @@
+// Switch to the 'adms' database
+use adms
+
+// Create GradesCollection with documents representing students, subjects, and their respective grades
+db.grades.insertMany([
+  {
+    "student_id": "student001",
+    "subjects": [
+      { "subject_name": "Math", "grade": 85 },
+      { "subject_name": "English", "grade": 90 },
+      { "subject_name": "History", "grade": 78 }
+    ]
+  },
+  {
+    "student_id": "student002",
+    "subjects": [
+      { "subject_name": "Math", "grade": 92 },
+      { "subject_name": "English", "grade": 88 },
+      { "subject_name": "History", "grade": 81 }
+    ]
+  },
+  {
+    "student_id": "student003",
+    "subjects": [
+      { "subject_name": "Math", "grade": 75 },
+      { "subject_name": "English", "grade": 85 },
+      { "subject_name": "History", "grade": 92 }
+    ]
+  },
+  {
+    "student_id": "student004",
+    "subjects": [
+      { "subject_name": "Math", "grade": 88 },
+      { "subject_name": "English", "grade": 95 },
+      { "subject_name": "History", "grade": 87 }
+    ]
+  },
+  {
+    "student_id": "student005",
+    "subjects": [
+      { "subject_name": "Math", "grade": 90 },
+      { "subject_name": "English", "grade": 80 },
+      { "subject_name": "History", "grade": 88 }
+    ]
+  }
+]);
+
+
+// Aggregate: Calculate each student's average grade
+db.grades.aggregate([
+  { $unwind: "$subjects" },
+  {
+    $group: {
+      _id: "$student_id",
+      average_grade: { $avg: "$subjects.grade" }
+    }
+  }
+]);
+
+
+// Aggregate: Find the top performers in each subject
+db.grades.aggregate([
+  { $unwind: "$subjects" },
+  {
+    $group: {
+      _id: "$subjects.subject_name",
+      top_performer: { 
+        $push: { 
+          student_id: "$student_id", 
+          grade: "$subjects.grade"
+        }
+      }
+    }
+  },
+  { $unwind: "$top_performer" },
+  { $sort: { "top_performer.grade": -1 } },
+  {
+    $group: {
+      _id: "$_id",
+      top_performers: { $first: "$top_performer" }
+    }
+  }
+]);
+
+
+// Index
+
+// Index on student_id for faster student-based queries
+db.grades.createIndex({ "student_id": 1 });
+
+// Index on subject_name for faster subject-based queries
+db.grades.createIndex({ "subjects.subject_name": 1 });
+
+db.collection.getIndexes();

@@ -1,0 +1,85 @@
+// Switch to the 'adms' database
+use adms
+
+// Create TransactionsCollection with details about bank transactions
+db.transactions.insertMany([
+  {
+    "transaction_id": "txn001",
+    "account_number": "acc123",
+    "type": "deposit",
+    "amount": 500,
+    "transaction_date": new Date("2024-01-15")
+  },
+  {
+    "transaction_id": "txn002",
+    "account_number": "acc124",
+    "type": "withdrawal",
+    "amount": 200,
+    "transaction_date": new Date("2024-01-16")
+  },
+  {
+    "transaction_id": "txn003",
+    "account_number": "acc123",
+    "type": "withdrawal",
+    "amount": 150,
+    "transaction_date": new Date("2024-01-17")
+  },
+  {
+    "transaction_id": "txn004",
+    "account_number": "acc125",
+    "type": "deposit",
+    "amount": 1000,
+    "transaction_date": new Date("2024-01-18")
+  },
+  {
+    "transaction_id": "txn005",
+    "account_number": "acc123",
+    "type": "deposit",
+    "amount": 1200,
+    "transaction_date": new Date("2024-01-20")
+  }
+]);
+
+// Aggregate: Total amount of transactions per account
+db.transactions.aggregate([
+  {
+    $group: {
+      _id: "$account_number",
+      total_amount: { $sum: "$amount" }
+    }
+  },
+  { $sort: { total_amount: -1 } }
+]);
+
+// Aggregate: Total number of transactions per account
+db.transactions.aggregate([
+  {
+    $group: {
+      _id: "$account_number",
+      total_transactions: { $sum: 1 }
+    }
+  },
+  { $sort: { total_transactions: -1 } }
+]);
+
+// Aggregate: Total amount of transactions per transaction type
+db.transactions.aggregate([
+  {
+    $group: {
+      _id: "$type",
+      total_amount: { $sum: "$amount" }
+    }
+  },
+  { $sort: { total_amount: -1 } }
+]);
+
+// Indexes
+
+// Index on account_number for faster queries based on account
+db.transactions.createIndex({ "account_number": 1 });
+
+// Index on transaction_date for faster queries within specific date ranges
+db.transactions.createIndex({ "transaction_date": 1 });
+
+// Get all indexes for TransactionsCollection
+db.transactions.getIndexes();

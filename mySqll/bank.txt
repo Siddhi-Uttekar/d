@@ -1,0 +1,30 @@
+- First, create a database and a table for bank accounts.
+
+CREATE DATABASE BankDB;
+USE BankDB;
+CREATE TABLE Accounts (
+AccountID INT PRIMARY KEY AUTO_INCREMENT,
+AccountHolder VARCHAR(50),
+Balance DECIMAL(10, 2)
+);
+
+INSERT INTO Accounts (AccountHolder, Balance) VALUES ('Alice',
+5000.00);
+INSERT INTO Accounts (AccountHolder, Balance) VALUES ('Bob', 3000.00);
+
+START TRANSACTION;
+-- OR
+BEGIN;
+
+UPDATE Accounts SET Balance = Balance - 500 WHERE AccountHolder =
+'Alice';
+UPDATE Accounts SET Balance = Balance + 500 WHERE AccountHolder =
+'Bob';
+
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+
+COMMIT;
+
+ROLLBACK;
+
+SELECT * FROM Accounts;

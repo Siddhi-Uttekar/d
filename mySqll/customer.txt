@@ -1,0 +1,30 @@
+CREATE DATABASE CustomerDB;
+USE CustomerDB;
+CREATE TABLE Purchases (
+PurchaseID INT PRIMARY KEY AUTO_INCREMENT,
+CustomerName VARCHAR(50),
+ProductName VARCHAR(50),
+Quantity INT,
+Price DECIMAL(10, 2),
+Total DECIMAL(10, 2)
+);
+
+INSERT INTO Purchases (CustomerName, ProductName, Quantity, Price,
+Total) VALUES
+('Alice', 'Laptop', 1, 1200.00, 1200.00),
+('Bob', 'Phone', 2, 500.00, 1000.00);
+
+START TRANSACTION;
+-- OR
+BEGIN;
+
+UPDATE Purchases SET Quantity = Quantity + 1, Total = Total + 1200.00
+WHERE CustomerName = 'Alice';
+
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+
+COMMIT;
+
+ROLLBACK;
+
+SELECT * FROM Purchases;

@@ -1,0 +1,88 @@
+// Switch to the 'adms' database
+use adms
+
+// Create EmployeePayrollCollection with details about employee payroll data
+db.employeePayroll.insertMany([
+  {
+    "employee_id": "emp001",
+    "department": "HR",
+    "salary": 5000,
+    "payment_date": new Date("2023-01-15")
+  },
+  {
+    "employee_id": "emp002",
+    "department": "Finance",
+    "salary": 7000,
+    "payment_date": new Date("2023-01-15")
+  },
+  {
+    "employee_id": "emp003",
+    "department": "HR",
+    "salary": 5500,
+    "payment_date": new Date("2023-02-15")
+  },
+  {
+    "employee_id": "emp004",
+    "department": "Engineering",
+    "salary": 9000,
+    "payment_date": new Date("2023-02-15")
+  },
+  {
+    "employee_id": "emp005",
+    "department": "Finance",
+    "salary": 8000,
+    "payment_date": new Date("2023-03-01")
+  }
+]);
+
+
+// Aggregate: Calculate total salary expense per department
+db.employeePayroll.aggregate([
+  {
+    $group: {
+      _id: "$department",
+      total_salary_expense: { $sum: "$salary" }
+    }
+  },
+  { $sort: { total_salary_expense: -1 } }
+]);
+
+
+// Aggregate: Calculate average salary per department
+db.employeePayroll.aggregate([
+  {
+    $group: {
+      _id: "$department",
+      average_salary: { $avg: "$salary" }
+    }
+  },
+  { $sort: { average_salary: -1 } }
+]);
+
+
+// Aggregate: Identify high-earning departments (departments with salary expenses above a threshold)
+db.employeePayroll.aggregate([
+  {
+    $group: {
+      _id: "$department",
+      total_salary_expense: { $sum: "$salary" }
+    }
+  },
+  {
+    $match: { total_salary_expense: { $gt: 12000 } }
+  },
+  { $sort: { total_salary_expense: -1 } }
+]);
+
+
+// Indexes
+
+// Index on department to optimize queries by department
+db.employeePayroll.createIndex({ "department": 1 });
+
+// Index on salary to optimize queries filtering by salary ranges
+db.employeePayroll.createIndex({ "salary": 1 });
+
+
+// Get all indexes for EmployeePayrollCollection
+db.employeePayroll.getIndexes();

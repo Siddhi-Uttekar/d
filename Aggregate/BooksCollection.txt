@@ -1,0 +1,99 @@
+// Switch to the 'adms' database
+use adms
+
+// Create BooksCollection with details about books
+db.books.insertMany([
+  {
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "genre": "Fiction",
+    "price": 15.99,
+    "publication_date": "1925-04-10",
+    "stock_quantity": 100
+  },
+  {
+    "title": "1984",
+    "author": "George Orwell",
+    "genre": "Dystopian",
+    "price": 12.99,
+    "publication_date": "1949-06-08",
+    "stock_quantity": 150
+  },
+  {
+    "title": "To Kill a Mockingbird",
+    "author": "Harper Lee",
+    "genre": "Fiction",
+    "price": 10.99,
+    "publication_date": "1960-07-11",
+    "stock_quantity": 200
+  },
+  {
+    "title": "The Catcher in the Rye",
+    "author": "J.D. Salinger",
+    "genre": "Fiction",
+    "price": 13.99,
+    "publication_date": "1951-07-16",
+    "stock_quantity": 120
+  },
+  {
+    "title": "Brave New World",
+    "author": "Aldous Huxley",
+    "genre": "Dystopian",
+    "price": 14.99,
+    "publication_date": "1932-08-18",
+    "stock_quantity": 80
+  }
+]);
+
+
+// Aggregate: Find popular genres (those with highest total stock quantity)
+db.books.aggregate([
+  {
+    $group: {
+      _id: "$genre",
+      total_stock_quantity: { $sum: "$stock_quantity" }
+    }
+  },
+  { $sort: { total_stock_quantity: -1 } },
+  { $limit: 1 }
+]);
+
+
+// Aggregate: Find top-selling authors (those with the highest total stock quantity)
+db.books.aggregate([
+  {
+    $group: {
+      _id: "$author",
+      total_stock_quantity: { $sum: "$stock_quantity" }
+    }
+  },
+  { $sort: { total_stock_quantity: -1 } },
+  { $limit: 1 }
+]);
+
+
+// Aggregate: Calculate the total inventory value (price * stock quantity)
+db.books.aggregate([
+  {
+    $group: {
+      _id: null,
+      total_inventory_value: { $sum: { $multiply: ["$price", "$stock_quantity"] } }
+    }
+  }
+]);
+
+
+// Index
+
+// Index on title for faster book title-based queries
+db.books.createIndex({ "title": 1 });
+
+// Index on author for faster author-based queries
+db.books.createIndex({ "author": 1 });
+
+// Index on genre for faster genre-based queries
+db.books.createIndex({ "genre": 1 });
+
+
+// Get all indexes for BooksCollection
+db.books.getIndexes();

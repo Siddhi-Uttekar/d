@@ -1,0 +1,92 @@
+
+// Switch to the 'adms' database
+use adms
+
+// Create DB
+db.orders.insertMany([
+  {
+    "customer_id": "customer001",
+    "products": [
+      { "product_id": "prod001", "price": 50, "quantity": 2 },
+      { "product_id": "prod002", "price": 30, "quantity": 1 }
+    ],
+    "total_amount": 130
+  },
+  {
+    "customer_id": "customer002",
+    "products": [
+      { "product_id": "prod003", "price": 100, "quantity": 1 }
+    ],
+    "total_amount": 100
+  },
+  {
+    "customer_id": "customer003",
+    "products": [
+      { "product_id": "prod002", "price": 30, "quantity": 3 },
+      { "product_id": "prod004", "price": 70, "quantity": 1 }
+    ],
+    "total_amount": 160
+  },
+  {
+    "customer_id": "customer001",
+    "products": [
+      { "product_id": "prod003", "price": 100, "quantity": 2 }
+    ],
+    "total_amount": 200
+  },
+  {
+    "customer_id": "customer004",
+    "products": [
+      { "product_id": "prod001", "price": 50, "quantity": 1 },
+      { "product_id": "prod002", "price": 30, "quantity": 2 }
+    ],
+    "total_amount": 110
+  }
+]);
+
+
+// Aggregate: Calculate total revenue from all orders
+db.orders.aggregate([
+  {
+    $group: {
+      _id: null,
+      total_revenue: { $sum: "$total_amount" }
+    }
+  }
+]);
+
+
+// Aggregate: Find the most sold product by quantity
+db.orders.aggregate([
+  { $unwind: "$products" },
+  {
+    $group: {
+      _id: "$products.product_id",
+      total_quantity: { $sum: "$products.quantity" }
+    }
+  },
+  { $sort: { total_quantity: -1 } },
+  { $limit: 1 }
+]);
+
+
+// Aggregate: Find the customer who spent the most
+db.orders.aggregate([
+  {
+    $group: {
+      _id: "$customer_id",
+      total_spent: { $sum: "$total_amount" }
+    }
+  },
+  { $sort: { total_spent: -1 } },
+  { $limit: 1 }
+]);
+
+
+// Index
+
+// Index on customer_id for faster customer-based queries
+db.orders.createIndex({ "customer_id": 1 });
+
+// Index on order_date for faster date-based queries
+db.orders.createIndex({ "order_date": 1 });

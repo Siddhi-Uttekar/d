@@ -1,0 +1,77 @@
+reviewId,productId,rating,reviewText
+1,1,5,"Excellent wireless mouse, very responsive and comfortable to use."
+2,1,4,"Good mouse, but battery life could be better."
+3,2,5,"Yoga mat is perfect, great quality and non-slip."
+4,2,3,"Average mat, but worth the price."
+5,3,4,"Desk lamp is functional and looks great, slightly dim for my liking."
+6,3,5,"Fantastic lamp, adds a modern touch to my desk."
+7,1,3,"Works well, but feels a bit cheap for the price."
+8,2,5,"Perfect for my home workouts, love the durability."
+9,3,4,"Stylish and compact, fits perfectly on my desk."
+10,1,2,"Had issues with the mouse after a month of use."
+
+
+
+// Json if needed
+[
+    {
+        "reviewId": 1,
+        "productId": 1,
+        "rating": 5,
+        "reviewText": "Excellent wireless mouse, very responsive and comfortable to use."
+    },
+    {
+        "reviewId": 2,
+        "productId": 1,
+        "rating": 4,
+        "reviewText": "Good mouse, but battery life could be better."
+    },
+    {
+        "reviewId": 3,
+        "productId": 2,
+        "rating": 5,
+        "reviewText": "Yoga mat is perfect, great quality and non-slip."
+    },
+    {
+        "reviewId": 4,
+        "productId": 2,
+        "rating": 3,
+        "reviewText": "Average mat, but worth the price."
+    },
+    {
+        "reviewId": 5,
+        "productId": 3,
+        "rating": 4,
+        "reviewText": "Desk lamp is functional and looks great, slightly dim for my liking."
+    },
+    {
+        "reviewId": 6,
+        "productId": 3,
+        "rating": 5,
+        "reviewText": "Fantastic lamp, adds a modern touch to my desk."
+    },
+    {
+        "reviewId": 7,
+        "productId": 1,
+        "rating": 3,
+        "reviewText": "Works well, but feels a bit cheap for the price."
+    },
+    {
+        "reviewId": 8,
+        "productId": 2,
+        "rating": 5,
+        "reviewText": "Perfect for my home workouts, love the durability."
+    },
+    {
+        "reviewId": 9,
+        "productId": 3,
+        "rating": 4,
+        "reviewText": "Stylish and compact, fits perfectly on my desk."
+    },
+    {
+        "reviewId": 10,
+        "productId": 1,
+        "rating": 2,
+        "reviewText": "Had issues with the mouse after a month of use."
+    }
+]

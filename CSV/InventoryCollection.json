@@ -1,0 +1,32 @@
+[
+	{
+		"inventoryId": 1,
+		"productId": 1,
+		"quantity": 150,
+		"itemDescription": "Wireless Mouse with ergonomic design and USB connectivity."
+	},
+	{
+		"inventoryId": 2,
+		"productId": 2,
+		"quantity": 80,
+		"itemDescription": "Yoga Mat made with eco-friendly, non-slip material."
+	},
+	{
+		"inventoryId": 3,
+		"productId": 3,
+		"quantity": 120,
+		"itemDescription": "Desk Lamp with adjustable brightness and energy-efficient LED light."
+	},
+	{
+		"inventoryId": 4,
+		"productId": 4,
+		"quantity": 50,
+		"itemDescription": "Bluetooth Headphones with noise-cancellation and long battery life."
+	},
+	{
+		"inventoryId": 5,
+		"productId": 5,
+		"quantity": 200,
+		"itemDescription": "Portable Power Bank with 20,000 mAh capacity and fast charging."
+	}
+]

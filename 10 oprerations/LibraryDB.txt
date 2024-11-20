@@ -1,0 +1,64 @@
+// Create BooksCollection in MongoDB and perform 10 queries to demonstrate various
+operations on JSON Documents.
+
+// Switch to the 'adms' database 
+use adms
+
+// Create a collection named 'LibraryDB'
+db.createCollection("LibraryDB");
+
+// Insert multiple documents into the 'LibraryDB' collection
+db.LibraryDB.insertMany([
+    { title: "The Great Gatsby", author: "F. Scott Fitzgerald", year: 1925, genre: "Fiction", copies: 5 },
+    { title: "1984", author: "George Orwell", year: 1949, genre: "Dystopian", copies: 12 },
+    { title: "To Kill a Mockingbird", author: "Harper Lee", year: 1960, genre: "Fiction", copies: 7 },
+    { title: "The Catcher in the Rye", author: "J.D. Salinger", year: 1951, genre: "Fiction", copies: 4 },
+    { title: "Moby-Dick", author: "Herman Melville", year: 1851, genre: "Adventure", copies: 3 },
+    { title: "Pride and Prejudice", author: "Jane Austen", year: 1813, genre: "Romance", copies: 8 },
+    { title: "The Hobbit", author: "J.R.R. Tolkien", year: 1937, genre: "Fantasy", copies: 10 },
+    { title: "War and Peace", author: "Leo Tolstoy", year: 1869, genre: "Historical", copies: 2 }
+])
+
+// Find and display all documents in the 'LibraryDB' collection
+db.LibraryDB.find()
+
+// Update the 'copies' field for the book titled "1984" to 15
+db.LibraryDB.updateOne(
+    { title: "1984" },
+    { $set: { copies: 15 } }
+)
+
+// Delete a book document where the publication year is before 1900
+db.LibraryDB.deleteOne({ year: { $lt: 1900 } })
+
+// Find books in the 'Fiction' genre and count the total number of documents found
+db.LibraryDB.find({ genre: "Fiction" }).count()
+
+// Find all books and sort them by year in descending order (most recent first)
+db.LibraryDB.find().sort({ year: -1 })
+
+// Find books where the number of copies is greater than 5
+db.LibraryDB.find({ copies: { $gt: 5 } })
+
+// Retrieve only the first 3 documents from the 'LibraryDB' collection
+db.LibraryDB.find().limit(3)
+
+// Find books authored by either "J.R.R. Tolkien" or "Harper Lee"
+db.LibraryDB.find({ author: { $in: ["J.R.R. Tolkien", "Harper Lee"] } })
+
+// Find books excluding genres "Fiction" and "Fantasy"
+db.LibraryDB.find({ genre: { $nin: ["Fiction", "Fantasy"] } })
+
+// Find books in the 'Fiction' genre and published after the year 1940
+db.LibraryDB.find({ genre: "Fiction", year: { $gt: 1940 } })
+
+// Update all books published before 1950 to increase their 'copies' field by 2
+db.LibraryDB.updateMany(
+    { year: { $lt: 1950 } },
+    { $inc: { copies: 2 } }
+)
+
+// Use aggregation to group books by genre and count the total number of books in each genre
+db.LibraryDB.aggregate([
+    { $group: { _id: "$genre", totalBooks: { $sum: 1 } } }
+]);

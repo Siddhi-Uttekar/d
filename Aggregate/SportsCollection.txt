@@ -1,0 +1,52 @@
+// Switch to the 'adms' database
+use adms
+
+// Create SportsCollection with sport details
+db.sports.insertMany([
+  {
+    "sport_id": "sport001",
+    "name": "Football",
+    "category": "Team Sport",
+    "popularity_rating": 9.5
+  },
+  {
+    "sport_id": "sport002",
+    "name": "Basketball",
+    "category": "Team Sport",
+    "popularity_rating": 8.7
+  },
+  {
+    "sport_id": "sport003",
+    "name": "Tennis",
+    "category": "Individual Sport",
+    "popularity_rating": 7.8
+  },
+  {
+    "sport_id": "sport004",
+    "name": "Cricket",
+    "category": "Team Sport",
+    "popularity_rating": 8.9
+  },
+  {
+    "sport_id": "sport005",
+    "name": "Swimming",
+    "category": "Individual Sport",
+    "popularity_rating": 7.2
+  }
+]);
+
+// Aggregate: Calculate the average popularity rating of sports
+db.sports.aggregate([
+  {
+    $group: {
+      _id: null,
+      average_popularity: { $avg: "$popularity_rating" }
+    }
+  }
+]);
+
+// Index on the 'name' field to optimize search queries based on sport names
+db.sports.createIndex({ "name": 1 });
+
+// Get all indexes for SportsCollection
+db.sports.getIndexes();

@@ -1,0 +1,54 @@
+//CSV
+
+customerId,firstName,lastName,email,phone,address
+1,John,Doe,john.doe@example.com,+1234567890,"1234 Elm St, Springfield, IL"
+2,Jane,Smith,jane.smith@example.com,+0987654321,"5678 Oak Rd, Springfield, IL"
+3,Emily,Jones,emily.jones@example.com,+1122334455,"9101 Pine Blvd, Chicago, IL"
+4,Michael,Brown,michael.brown@example.com,+2233445566,"1213 Maple Ave, Naperville, IL"
+5,David,Wilson,david.wilson@example.com,+3344556677,"1415 Birch Dr, Evanston, IL"
+
+
+//Json
+[
+    {
+        "customerId": 1,
+        "firstName": "John",
+        "lastName": "Doe",
+        "email": "john.doe@example.com",
+        "phone": "+1234567890",
+        "address": "1234 Elm St, Springfield, IL"
+    },
+    {
+        "customerId": 2,
+        "firstName": "Jane",
+        "lastName": "Smith",
+        "email": "jane.smith@example.com",
+        "phone": "+0987654321",
+        "address": "5678 Oak Rd, Springfield, IL"
+    },
+    {
+        "customerId": 3,
+        "firstName": "Emily",
+        "lastName": "Jones",
+        "email": "emily.jones@example.com",
+        "phone": "+1122334455",
+        "address": "9101 Pine Blvd, Chicago, IL"
+    },
+    {
+        "customerId": 4,
+        "firstName": "Michael",
+        "lastName": "Brown",
+        "email": "michael.brown@example.com",
+        "phone": "+2233445566",
+        "address": "1213 Maple Ave, Naperville, IL"
+    },
+    {
+        "customerId": 5,
+        "firstName": "David",
+        "lastName": "Wilson",
+        "email": "david.wilson@example.com",
+        "phone": "+3344556677",
+        "address": "1415 Birch Dr, Evanston, IL"
+    }
+]
+

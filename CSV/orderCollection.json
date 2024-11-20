@@ -1,0 +1,73 @@
+{
+	"users": [
+		{
+			"userId": 1,
+			"username": "johndoe",
+			"email": "johndoe@example.com",
+			"password": "password123"
+		},
+		{
+			"userId": 2,
+			"username": "janedoe",
+			"email": "janedoe@example.com",
+			"password": "securepass"
+		}
+	],
+	"products": [
+		{
+			"productId": 1,
+			"productName": "Wireless Mouse",
+			"price": 25.99,
+			"category": "Electronics"
+		},
+		{
+			"productId": 2,
+			"productName": "Yoga Mat",
+			"price": 19.99,
+			"category": "Fitness"
+		},
+		{
+			"productId": 3,
+			"productName": "Desk Lamp",
+			"price": 19.99,
+			"category": "Home"
+		}
+	],
+	"orders": [
+		{
+			"orderId": 1,
+			"userId": 1,
+			"productId": 1,
+			"quantity": 2,
+			"totalPrice": 51.98
+		},
+		{
+			"orderId": 2,
+			"userId": 2,
+			"productId": 3,
+			"quantity": 1,
+			"totalPrice": 19.99
+		},
+		{
+			"orderId": 3,
+			"userId": 1,
+			"productId": 2,
+			"quantity": 3,
+			"totalPrice": 59.97
+		},
+		{
+			"orderId": 4,
+			"userId": 2,
+			"productId": 2,
+			"quantity": 1,
+			"totalPrice": 19.99
+		},
+		{
+			"orderId": 5,
+			"userId": 1,
+			"productId": 3,
+			"quantity": 2,
+			"totalPrice": 39.98
+		}
+	]
+}

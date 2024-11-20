@@ -1,0 +1,77 @@
+// Switch to the 'adms' database
+use adms
+
+// Create ReviewsCollection with details about product reviews
+db.reviews.insertMany([
+  {
+    "product_id": "prod001",
+    "rating": 4,
+    "review_date": "2023-01-10",
+    "reviewer": "John Doe",
+    "review_text": "Great product! Very useful."
+  },
+  {
+    "product_id": "prod002",
+    "rating": 5,
+    "review_date": "2023-02-15",
+    "reviewer": "Jane Smith",
+    "review_text": "Excellent quality, exceeded my expectations."
+  },
+  {
+    "product_id": "prod001",
+    "rating": 3,
+    "review_date": "2023-03-20",
+    "reviewer": "Alice Johnson",
+    "review_text": "Good product, but could use some improvements."
+  },
+  {
+    "product_id": "prod003",
+    "rating": 2,
+    "review_date": "2023-04-05",
+    "reviewer": "Bob Brown",
+    "review_text": "Not satisfied with the product, too many issues."
+  },
+  {
+    "product_id": "prod002",
+    "rating": 4,
+    "review_date": "2023-05-18",
+    "reviewer": "Charlie Davis",
+    "review_text": "Solid product, very reliable."
+  }
+]);
+
+
+
+// Aggregate: Compute average rating per product
+db.reviews.aggregate([
+  {
+    $group: {
+      _id: "$product_id",
+      average_rating: { $avg: "$rating" }
+    }
+  },
+]);
+
+
+// Aggregate: Compute the total number of reviews per product
+db.reviews.aggregate([
+  {
+    $group: {
+      _id: "$product_id",
+      total_reviews: { $sum: 1 }
+    }
+  },
+]);
+
+
+// Indexes
+
+// Index on product_id to optimize queries by product
+db.reviews.createIndex({ "product_id": 1 });
+
+// Index on rating to optimize filtering by rating
+db.reviews.createIndex({ "rating": 1 });
+
+
+// Get all indexes for ReviewsCollection
+db.reviews.getIndexes();

@@ -1,0 +1,55 @@
+// Switch to the 'adms' database
+use adms
+
+// Create a collection named 'FlightsCollection'
+db.createCollection("FlightsCollection");
+
+// Insert multiple flight documents into the 'FlightsCollection'
+db.FlightsCollection.insertMany([
+    { flightNumber: "AI101", airline: "Air India", departure: "Delhi", destination: "New York", duration: 14, seatsAvailable: 50, price: 750 },
+    { flightNumber: "BA202", airline: "British Airways", departure: "London", destination: "Mumbai", duration: 9, seatsAvailable: 30, price: 600 },
+    { flightNumber: "EK303", airline: "Emirates", departure: "Dubai", destination: "Sydney", duration: 13, seatsAvailable: 40, price: 1200 },
+    { flightNumber: "SQ404", airline: "Singapore Airlines", departure: "Singapore", destination: "San Francisco", duration: 16, seatsAvailable: 25, price: 1400 },
+    { flightNumber: "LH505", airline: "Lufthansa", departure: "Frankfurt", destination: "Tokyo", duration: 12, seatsAvailable: 20, price: 1000 },
+    { flightNumber: "AF606", airline: "Air France", departure: "Paris", destination: "Dubai", duration: 7, seatsAvailable: 35, price: 500 },
+    { flightNumber: "QF707", airline: "Qantas", departure: "Sydney", destination: "Los Angeles", duration: 15, seatsAvailable: 15, price: 1500 },
+    { flightNumber: "UA808", airline: "United Airlines", departure: "San Francisco", destination: "Chicago", duration: 5, seatsAvailable: 60, price: 300 }
+]);
+
+// 1. Find all flights in the collection
+db.FlightsCollection.find()
+
+// 2. Update the price of flight "EK303" to 1300
+db.FlightsCollection.updateOne(
+    { flightNumber: "EK303" },
+    { $set: { price: 1300 } }
+)
+
+// 3. Delete flights with duration less than 6 hours
+db.FlightsCollection.deleteMany({ duration: { $lt: 6 } })
+
+// 4. Count the number of flights departing from "Dubai"
+db.FlightsCollection.find({ departure: "Dubai" }).count()
+
+// 5. Find all flights and sort them by price in ascending order
+db.FlightsCollection.find().sort({ price: 1 })
+
+// 6. Find flights with seats available greater than 20
+db.FlightsCollection.find({ seatsAvailable: { $gt: 20 } })
+
+// 7. Limit the results to 3 flights
+db.FlightsCollection.find().limit(3)
+
+// 8. Find flights operated by either "Air India" or "Emirates" using `$or`
+db.FlightsCollection.find({ $or: [{ airline: "Air India" }, { airline: "Emirates" }] })
+
+// 9. Find flights where the destination is "New York" and duration is greater than 10 hours using `$and`
+db.FlightsCollection.find({ $and: [{ destination: "New York" }, { duration: { $gt: 10 } }] })
+
+// 10. Use aggregation to calculate the average price of flights for each departure location
+db.FlightsCollection.aggregate([
+    { $group: { _id: "$departure", avgPrice: { $avg: "$price" } } }
+]);
+
+// Verify data after updates and deletions
+db.FlightsCollection.find()

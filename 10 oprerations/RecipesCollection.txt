@@ -1,0 +1,55 @@
+// Switch to the 'adms' database
+use adms
+
+// Create a collection named 'RecipesCollection'
+db.createCollection("RecipesCollection");
+
+// Insert multiple recipe documents into the 'RecipesCollection'
+db.RecipesCollection.insertMany([
+    { name: "Spaghetti Bolognese", cuisine: "Italian", prepTime: 30, difficulty: "Medium", ingredients: ["spaghetti", "beef", "tomato sauce"], rating: 4.5 },
+    { name: "Chicken Tikka Masala", cuisine: "Indian", prepTime: 40, difficulty: "Hard", ingredients: ["chicken", "yogurt", "spices"], rating: 4.8 },
+    { name: "Sushi", cuisine: "Japanese", prepTime: 60, difficulty: "Hard", ingredients: ["rice", "fish", "seaweed"], rating: 4.9 },
+    { name: "Tacos", cuisine: "Mexican", prepTime: 20, difficulty: "Easy", ingredients: ["tortilla", "beef", "cheese"], rating: 4.3 },
+    { name: "Pad Thai", cuisine: "Thai", prepTime: 35, difficulty: "Medium", ingredients: ["rice noodles", "shrimp", "peanuts"], rating: 4.7 },
+    { name: "Apple Pie", cuisine: "American", prepTime: 50, difficulty: "Medium", ingredients: ["apples", "flour", "sugar"], rating: 4.6 },
+    { name: "Shawarma", cuisine: "Middle Eastern", prepTime: 25, difficulty: "Easy", ingredients: ["chicken", "pita", "garlic sauce"], rating: 4.4 },
+    { name: "Ratatouille", cuisine: "French", prepTime: 40, difficulty: "Hard", ingredients: ["zucchini", "eggplant", "tomatoes"], rating: 4.5 }
+]);
+
+// 1. Find all recipes in the collection
+db.RecipesCollection.find()
+
+// 2. Update the rating of "Chicken Tikka Masala" to 4.9
+db.RecipesCollection.updateOne(
+    { name: "Chicken Tikka Masala" },
+    { $set: { rating: 4.9 } }
+)
+
+// 3. Delete recipes with a preparation time less than 30 minutes
+db.RecipesCollection.deleteMany({ prepTime: { $lt: 30 } })
+
+// 4. Count the number of recipes with a difficulty level of "Medium"
+db.RecipesCollection.find({ difficulty: "Medium" }).count()
+
+// 5. Find all recipes and sort them by rating in descending order
+db.RecipesCollection.find().sort({ rating: -1 })
+
+// 6. Find recipes with preparation time greater than 30 minutes
+db.RecipesCollection.find({ prepTime: { $gt: 30 } })
+
+// 7. Limit the results to 3 recipes
+db.RecipesCollection.find().limit(3)
+
+// 8. Use `$or` to find recipes with prepTime greater than 50 or less than 30
+db.RecipesCollection.find({ $or: [{ prepTime: { $gt: 50 } }, { prepTime: { $lt: 30 } }] })
+
+// 9. Find recipes with a rating greater than 4.5 and sort by prepTime in ascending order
+db.RecipesCollection.find({ rating: { $gt: 4.5 } }).sort({ prepTime: 1 })
+
+// 10. Use aggregation to calculate the average rating for each cuisine
+db.RecipesCollection.aggregate([
+    { $group: { _id: "$cuisine", avgRating: { $avg: "$rating" } } }
+]);
+
+// Verify data after updates and deletions
+db.RecipesCollection.find()

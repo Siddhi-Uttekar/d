@@ -1,0 +1,55 @@
+// Switch to the 'adms' database (creates it if it doesn't exist)
+use adms
+
+// Create a collection named 'OrdersCollection'
+db.createCollection("OrdersCollection");
+
+// Insert multiple documents into the 'OrdersCollection'
+db.OrdersCollection.insertMany([
+    { orderId: 101, customerName: "Alice", totalAmount: 250, status: "Delivered", items: ["Laptop", "Mouse"], orderDate: new Date("2024-11-01") },
+    { orderId: 102, customerName: "Bob", totalAmount: 120, status: "Pending", items: ["Headphones"], orderDate: new Date("2024-11-02") },
+    { orderId: 103, customerName: "Charlie", totalAmount: 75, status: "Cancelled", items: ["Notebook", "Pen"], orderDate: new Date("2024-11-03") },
+    { orderId: 104, customerName: "David", totalAmount: 300, status: "Delivered", items: ["Smartphone", "Charger"], orderDate: new Date("2024-11-04") },
+    { orderId: 105, customerName: "Eva", totalAmount: 450, status: "Shipped", items: ["Tablet"], orderDate: new Date("2024-11-05") },
+    { orderId: 106, customerName: "Frank", totalAmount: 200, status: "Delivered", items: ["Monitor"], orderDate: new Date("2024-11-06") },
+    { orderId: 107, customerName: "Grace", totalAmount: 80, status: "Pending", items: ["Keyboard"], orderDate: new Date("2024-11-07") },
+    { orderId: 108, customerName: "Hank", totalAmount: 500, status: "Delivered", items: ["Gaming Console"], orderDate: new Date("2024-11-08") }
+])
+
+// 1. Find all orders in the 'OrdersCollection'
+db.OrdersCollection.find()
+
+// 2. Update the status of an order where 'orderId' is 102 to 'Shipped'
+db.OrdersCollection.updateOne(
+    { orderId: 102 },
+    { $set: { status: "Shipped" } }
+)
+
+// 3. Delete an order where the total amount is less than 100
+db.OrdersCollection.deleteOne({ totalAmount: { $lt: 100 } })
+
+// 4. Find and count orders where the status is 'Delivered'
+db.OrdersCollection.find({ status: "Delivered" }).count()
+
+// 5. Find all orders and sort them by 'totalAmount' in descending order
+db.OrdersCollection.find().sort({ totalAmount: -1 })
+
+// 6. Find orders with a 'totalAmount' greater than 200
+db.OrdersCollection.find({ totalAmount: { $gt: 200 } })
+
+// 7. Limit the result to the first 3 orders
+db.OrdersCollection.find().limit(3)
+
+// 8. Find orders placed by specific customers using `$in`
+db.OrdersCollection.find({ customerName: { $in: ["Alice", "Eva"] } })
+
+// 9. Exclude orders with statuses 'Cancelled' and 'Pending' using `$nin`
+db.OrdersCollection.find({ status: { $nin: ["Cancelled", "Pending"] } })
+
+// 10. Use aggregation to group orders by their 'status' and calculate the total number of orders in each status
+db.OrdersCollection.aggregate([
+    { $group: { _id: "$status", totalOrders: { $sum: 1 } } }
+]);
+
+// Verify all data after updates and deletions
+db.OrdersCollection.find()

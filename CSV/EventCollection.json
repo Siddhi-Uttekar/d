@@ -1,0 +1,37 @@
+[
+	{
+		"eventId": 1,
+		"eventName": "Music Concert",
+		"eventDate": "2024-12-01",
+		"eventLocation": "Madison Square Garden, New York",
+		"eventDescription": "A live music concert featuring popular artists."
+	},
+	{
+		"eventId": 2,
+		"eventName": "Tech Conference 2024",
+		"eventDate": "2024-11-20",
+		"eventLocation": "Silicon Valley Convention Center, California",
+		"eventDescription": "A conference showcasing the latest in technology and innovation."
+	},
+	{
+		"eventId": 3,
+		"eventName": "Art Exhibition",
+		"eventDate": "2024-12-10",
+		"eventLocation": "The Louvre Museum, Paris",
+		"eventDescription": "An exhibition displaying modern and classical art pieces."
+	},
+	{
+		"eventId": 4,
+		"eventName": "Food Festival",
+		"eventDate": "2024-11-25",
+		"eventLocation": "Central Park, New York",
+		"eventDescription": "A food festival featuring cuisines from around the world."
+	},
+	{
+		"eventId": 5,
+		"eventName": "Sports Meet",
+		"eventDate": "2024-12-15",
+		"eventLocation": "Olympic Stadium, London",
+		"eventDescription": "An annual sports meet featuring athletics, football, and more."
+	}
+]

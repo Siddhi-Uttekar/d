@@ -1,0 +1,30 @@
+- Create Database and User Table
+
+CREATE DATABASE UserDB;
+USE UserDB;
+CREATE TABLE Users (
+UserID INT PRIMARY KEY AUTO_INCREMENT,
+Username VARCHAR(50),
+Email VARCHAR(50),
+Credit DECIMAL(10, 2)
+);
+
+INSERT INTO Users (Username, Email, Credit) VALUES ('JohnDoe',
+'john@example.com', 1000.00);
+INSERT INTO Users (Username, Email, Credit) VALUES ('JaneSmith',
+'jane@example.com', 1500.00);
+
+START TRANSACTION;
+-- OR
+BEGIN;
+
+UPDATE Users SET Credit = Credit - 200 WHERE Username = 'JohnDoe';
+UPDATE Users SET Credit = Credit + 200 WHERE Username = 'JaneSmith';
+
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+
+COMMIT
+
+ROLLBACK;
+
+SELECT * FROM Users;

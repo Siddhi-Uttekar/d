@@ -1,0 +1,52 @@
+[
+	{
+		"username": "johndoe",
+		"email": "johndoe@example.com",
+		"password": "password123"
+	},
+	{
+		"username": "janedoe",
+		"email": "janedoe@example.com",
+		"password": "securepass"
+	},
+	{
+		"username": "mikesmith",
+		"email": "mikesmith@example.com",
+		"password": "mike2024"
+	},
+	{
+		"username": "sarahlane",
+		"email": "sarahlane@example.com",
+		"password": "lane@789"
+	},
+	{
+		"username": "emmawatson",
+		"email": "emmawatson@example.com",
+		"password": "watsonEmma123"
+	},
+	{
+		"username": "oliverjames",
+		"email": "oliverjames@example.com",
+		"password": "oliver789"
+	},
+	{
+		"username": "lucybrown",
+		"email": "lucybrown@example.com",
+		"password": "brownie@01"
+	},
+	{
+		"username": "willturner",
+		"email": "willturner@example.com",
+		"password": "turnerWill"
+	},
+	{
+		"username": "gracekelly",
+		"email": "gracekelly@example.com",
+		"password": "kellyGrace2024"
+	},
+	{
+		"username": "nathanross",
+		"email": "nathanross@example.com",
+		"password": "natepass"
+	}
+]

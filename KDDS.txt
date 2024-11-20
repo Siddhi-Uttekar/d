@@ -1,0 +1,126 @@
+Step 1: Data Collection (Creating the Collection)
+First, let's create a collection called orders in MongoDB with sample data.
+// Connect to the MongoDB database
+use retailStore;
+
+
+// Create 'orders' collection and insert sample data
+db.orders.insertMany([
+    { order_id: 1, customer_id: 1001, purchase_date: ISODate("2024-11-01"), item_id: "A001", amount: 150, duplicate: false },
+    { order_id: 2, customer_id: 1002, purchase_date: ISODate("2024-11-02"), item_id: "A002", amount: 200, duplicate: false },
+    { order_id: 3, customer_id: 1001, purchase_date: ISODate("2024-11-03"), item_id: "A003", amount: 250, duplicate: false },
+    { order_id: 4, customer_id: 1003, purchase_date: ISODate("2024-11-03"), item_id: "A004", amount: 100, duplicate: true },
+    { order_id: 5, customer_id: 1002, purchase_date: ISODate("2024-11-04"), item_id: "A005", amount: 50, duplicate: false }
+]);
+
+
+Step 2: Data Cleaning
+Data cleaning involves removing inconsistencies, such as duplicates, or filling missing values.
+// Remove duplicate orders where the `duplicate` field is true
+db.orders.deleteMany({ duplicate: true });
+
+
+// Fill missing values in 'amount' with a default value (if any records had missing amount)
+db.orders.updateMany(
+    { amount: { $exists: false } },
+    { $set: { amount: 0 } }
+);
+
+
+Step 3: Data Integration
+If the data comes from multiple sources, you might need to integrate it. For example, suppose we have another collection called customers containing customer demographic data.
+
+
+// Create 'customers' collection and insert sample data
+db.customers.insertMany([
+    { customer_id: 1001, name: "Alice", age_group: "25-34", region: "North" },
+    { customer_id: 1002, name: "Bob", age_group: "35-44", region: "South" },
+    { customer_id: 1003, name: "Charlie", age_group: "45-54", region: "East" }
+]);
+
+
+// Integrate order data with customer information using $lookup
+db.orders.aggregate([
+    {
+        $lookup: {
+            from: "customers",
+            localField: "customer_id",
+            foreignField: "customer_id",
+            as: "customer_info"
+        }
+    },
+    { $unwind: "$customer_info" }
+]);
+
+
+Step 4: Data Selection
+Select only the relevant fields for analysis, for example, customer details, order amount, and purchase date.
+db.orders.find(
+    {},
+    { customer_id: 1, purchase_date: 1, item_id: 1, amount: 1, "customer_info.age_group": 1, "customer_info.region": 1 }
+);
+
+
+Step 5: Data Transformation
+Transform the data for further analysis, such as aggregating the total spending by each customer.
+db.orders.aggregate([
+    {
+        $group: {
+            _id: "$customer_id", 
+            total_spent: { $sum: "$amount" },
+            purchase_count: { $sum: 1 }
+        }
+    }
+]);
+
+
+Step 6: Data Mining
+Now, apply data mining techniques. For instance, identify high-value customers who have spent more than $500.
+db.orders.aggregate([
+    {
+        $group: {
+            _id: "$customer_id", 
+            total_spent: { $sum: "$amount" }
+        }
+    },
+    { $match: { total_spent: { $gt: 300 } } }
+]);
+
+
+Step 7: Knowledge Representation
+Finally, represent the findings in a way that is easy for decision-makers to understand. For example, show how high-value customers are distributed by age group.
+db.orders.aggregate([
+    {
+        $lookup: {
+            from: "customers",          // Name of the other collection
+            localField: "customer_id",  // Field in 'orders' to match
+            foreignField: "customer_id", // Field in 'customers' to match
+            as: "customer_info"         // Field to store the joined customer info
+        }
+    },
+    {
+        $unwind: "$customer_info"  // Flatten the customer_info array
+    },
+    {
+        $group: {
+            _id: "$customer_info.age_group", // Group by the customer's age group
+            high_value_customers: {
+                $sum: {
+                    $cond: [{ $gt: ["$amount", 100] }, 1, 0] // Count if purchase amount > 100
+                }
+            }
+        }
+    }
+]);
+
+
+
+
+Summary of the KDD Process with MongoDB
+1. Data Collection: Created an orders collection and inserted sample data.
+2. Data Cleaning: Removed duplicates and handled missing values.
+3. Data Integration: Integrated customer information using $lookup.
+4. Data Selection: Selected the relevant data fields for analysis.
+5. Data Transformation: Transformed the data to calculate total spending by each customer.
+6. Data Mining: Applied mining techniques to identify high-value customers.
+7. Knowledge Representation: Generated a report showing the distribution of high-value customers across age groups.

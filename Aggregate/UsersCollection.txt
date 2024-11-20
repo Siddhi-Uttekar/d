@@ -1,0 +1,57 @@
+// Switch to the 'adms' database
+use adms
+
+// Create UsersCollection with user details
+db.users.insertMany([
+  {
+    "user_id": "user001",
+    "name": "Alice Smith",
+    "email": "alice.smith@example.com",
+    "registration_date": new Date("2023-01-15"),
+    "age": 25
+  },
+  {
+    "user_id": "user002",
+    "name": "Bob Johnson",
+    "email": "bob.johnson@example.com",
+    "registration_date": new Date("2023-03-20"),
+    "age": 30
+  },
+  {
+    "user_id": "user003",
+    "name": "Charlie Brown",
+    "email": "charlie.brown@example.com",
+    "registration_date": new Date("2023-05-25"),
+    "age": 22
+  },
+  {
+    "user_id": "user004",
+    "name": "David Wilson",
+    "email": "david.wilson@example.com",
+    "registration_date": new Date("2023-07-10"),
+    "age": 28
+  },
+  {
+    "user_id": "user005",
+    "name": "Eve Davis",
+    "email": "eve.davis@example.com",
+    "registration_date": new Date("2023-09-05"),
+    "age": 27
+  }
+]);
+
+// Aggregate: Calculate the average age of users
+db.users.aggregate([
+  {
+    $group: {
+      _id: null,
+      average_age: { $avg: "$age" }
+    }
+  }
+]);
+
+// Index on the 'registration_date' field to optimize queries based on registration date
+db.users.createIndex({ "registration_date": 1 });
+
+// Get all indexes for UsersCollection
+db.users.getIndexes();

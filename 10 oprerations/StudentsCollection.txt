@@ -1,0 +1,55 @@
+// Switch to the 'adms' database (creates it if it doesn't exist)
+use adms
+
+// Create a collection named 'StudentsCollection'
+db.createCollection("StudentsCollection");
+
+// Insert multiple student documents into the 'StudentsCollection'
+db.StudentsCollection.insertMany([
+    { name: "John Doe", age: 20, department: "Computer Science", grades: 85, city: "New York" },
+    { name: "Jane Smith", age: 22, department: "Electrical Engineering", grades: 90, city: "Los Angeles" },
+    { name: "Alice Johnson", age: 19, department: "Mathematics", grades: 88, city: "Chicago" },
+    { name: "Bob Brown", age: 21, department: "Physics", grades: 75, city: "Houston" },
+    { name: "Eve Davis", age: 23, department: "Computer Science", grades: 92, city: "San Francisco" },
+    { name: "Charlie Wilson", age: 20, department: "Biology", grades: 78, city: "Seattle" },
+    { name: "Grace Lee", age: 24, department: "Computer Science", grades: 95, city: "Boston" },
+    { name: "David Clark", age: 22, department: "Mathematics", grades: 89, city: "Austin" }
+]);
+
+// 1. Find all students in the collection
+db.StudentsCollection.find()
+
+// 2. Update the grades of "Bob Brown" to 80
+db.StudentsCollection.updateOne(
+    { name: "Bob Brown" },
+    { $set: { grades: 80 } }
+)
+
+// 3. Delete a student with grades less than 80
+db.StudentsCollection.deleteOne({ grades: { $lt: 80 } })
+
+// 4. Count the number of students in the "Computer Science" department
+db.StudentsCollection.find({ department: "Computer Science" }).count()
+
+// 5. Find all students and sort them by grades in descending order
+db.StudentsCollection.find().sort({ grades: -1 })
+
+// 6. Find students older than 20 years
+db.StudentsCollection.find({ age: { $gt: 20 } })
+
+// 7. Limit the results to 3 students
+db.StudentsCollection.find().limit(3)
+
+// 8. Find students living in "New York" or "Chicago" using `$or`
+db.StudentsCollection.find({ $or: [{ city: "New York" }, { city: "Chicago" }] })
+
+// 9. Use `$and` to find students in "Computer Science" with grades greater than 90
+db.StudentsCollection.find({ $and: [{ department: "Computer Science" }, { grades: { $gt: 90 } }] })
+
+// 10. Use aggregation to calculate the average grades for each department
+db.StudentsCollection.aggregate([
+    { $group: { _id: "$department", avgGrades: { $avg: "$grades" } } }
+]);
+
+// Verify data after updates and deletions
+db.StudentsCollection.find()

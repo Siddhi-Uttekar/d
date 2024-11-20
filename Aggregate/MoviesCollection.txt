@@ -1,0 +1,88 @@
+// Switch to the 'adms' database
+use adms
+
+// Create MoviesCollection with details about movie data
+db.movies.insertMany([
+  {
+    "title": "The Shawshank Redemption",
+    "genre": "Drama",
+    "release_year": 1994,
+    "director": "Frank Darabont",
+    "rating": 9.3
+  },
+  {
+    "title": "The Dark Knight",
+    "genre": "Action",
+    "release_year": 2008,
+    "director": "Christopher Nolan",
+    "rating": 9.0
+  },
+  {
+    "title": "Inception",
+    "genre": "Sci-Fi",
+    "release_year": 2010,
+    "director": "Christopher Nolan",
+    "rating": 8.8
+  },
+  {
+    "title": "Interstellar",
+    "genre": "Sci-Fi",
+    "release_year": 2014,
+    "director": "Christopher Nolan",
+    "rating": 8.6
+  },
+  {
+    "title": "The Godfather",
+    "genre": "Crime",
+    "release_year": 1972,
+    "director": "Francis Ford Coppola",
+    "rating": 9.2
+  }
+]);
+
+
+// Aggregate: Top-rated movies (top 3)
+db.movies.aggregate([
+  { $sort: { rating: -1 } },
+  { $limit: 3 }
+]);
+
+
+// Aggregate: Most popular genres (most movies per genre)
+db.movies.aggregate([
+  {
+    $group: {
+      _id: "$genre",
+      total_movies: { $sum: 1 }
+    }
+  },
+  { $sort: { total_movies: -1 } }
+]);
+
+
+// Aggregate: Average rating by release year
+db.movies.aggregate([
+  {
+    $group: {
+      _id: "$release_year",
+      average_rating: { $avg: "$rating" }
+    }
+  },
+  { $sort: { _id: -1 } }
+]);
+
+
+// Indexes
+
+// Index on title for faster searches by title
+db.movies.createIndex({ "title": 1 });
+
+// Index on genre for faster searches by genre
+db.movies.createIndex({ "genre": 1 });
+
+// Index on rating for faster searches by rating
+db.movies.createIndex({ "rating": 1 });
+
+
+// Get all indexes for MoviesCollection
+db.movies.getIndexes();
