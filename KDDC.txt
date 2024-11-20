@@ -1,0 +1,83 @@
+1. Data Selection (Filter Active Customers)
+db.customers.find(
+  { active: true }, // Select only active customers
+  { 
+    customer_id: 1, 
+    name: 1, 
+    email: 1, 
+    purchase_history: 1, 
+    signup_date: 1
+  }
+);
+
+
+2. Data Preprocessing (Handle Missing Data & Remove Duplicates)
+// Handle missing last_purchase_date
+db.customers.updateMany(
+  { last_purchase_date: null },
+  { $set: { last_purchase_date: "2023-01-01" } } // Default date
+);
+
+// Remove duplicate customers based on customer_id
+db.customers.aggregate([
+  { $group: { _id: "$customer_id", doc: { $first: "$$ROOT" } } },
+  { $replaceRoot: { newRoot: "$doc" } },
+  { $out: "customers_cleaned" } // Save the cleaned data
+]);
+3. Data Transformation (Calculate Total Spend)
+Now, we will compute the total amount spent by each customer based on their purchase history.
+
+javascript
+Copy code
+db.customers_cleaned.aggregate([
+  {
+    $addFields: {
+      total_spent: { $sum: "$purchase_history.amount" } // Sum of all amounts in purchase_history
+    }
+  },
+  { $out: "customers_transformed" } // Save the transformed data
+]);
+4. Data Mining (Identify Low Spenders & Inactive Customers)
+We'll match customers who are low spenders (total_spent < 50) and inactive (last_purchase_date before a certain date).
+
+javascript
+Copy code
+db.customers_transformed.aggregate([
+  {
+    $match: {
+      total_spent: { $lt: 50 }, // Filter low spenders
+      last_purchase_date: { $lt: new Date("2023-06-01") } // Filter inactive customers
+    }
+  },
+  {
+    $project: {
+      customer_id: 1,
+      name: 1,
+      email: 1,
+      churn_risk: "high" // Label these customers as high churn risk
+    }
+  },
+  { $out: "churn_predictions" } // Save predictions
+]);
+
+5. Pattern Evaluation (Count Churn Risk)
+
+db.churn_predictions.aggregate([
+  {
+    $group: {
+      _id: "$churn_risk",
+      count: { $sum: 1 } // Count how many customers have each churn risk level
+    }
+  }
+]);
+6. Knowledge Representation (Export Data)
+
+
+mongoexport --db=your_database --collection=churn_predictions --out=churn_predictions.json
+
+
+7. Decision Making (Action on Predictions)
+
+db.churn_predictions.find({ churn_risk: "high" }).forEach(function (customer) {
+  print("Send retention email to:", customer.name, customer.email);
+});
