@@ -1,0 +1,31 @@
+[
+  {
+    "customer_id": 1,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "purchase_history": [
+      { "date": "2023-05-01", "amount": 50 },
+      { "date": "2023-06-15", "amount": 30 }
+    ],
+    "last_purchase_date": "2023-06-15",
+    "signup_date": "2022-01-01"
+  },
+  {
+    "customer_id": 2,
+    "name": "Jane Smith",
+    "email": "jane@example.com",
+    "purchase_history": [],
+    "last_purchase_date": null,
+    "signup_date": "2023-01-01"
+  },
+  {
+    "customer_id": 3,
+    "name": "Sam Brown",
+    "email": "sam@example.com",
+    "purchase_history": [
+      { "date": "2023-03-01", "amount": 20 }
+    ],
+    "last_purchase_date": "2023-03-01",
+    "signup_date": "2021-01-01"
+  }
+]
